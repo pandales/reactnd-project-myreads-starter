@@ -1,26 +1,11 @@
 import React from 'react'
-import BookShelf from './components/BookShelf'
+import {BookShelf} from './components/BookShelf'
 import * as BooksAPI from './BooksAPI'
 import {Link} from 'react-router-dom'
 
 class ListBooks extends React.Component {
   state = {
-    books: [],
-
-    shelves: [
-      {
-        code: 'currentlyReading',
-        name: 'Currently Reading'
-      },
-      {
-        code: 'wantToRead',
-        name: 'Want to read'
-      },
-      {
-        code: 'read',
-        name: 'Read'
-      }
-    ]
+    books: []
   };
 
   componentDidMount() {

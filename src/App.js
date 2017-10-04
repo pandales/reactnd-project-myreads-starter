@@ -6,9 +6,7 @@ import SearchBooks from "./SearchBooks";
 
 class BooksApp extends React.Component {
 
-  state = {
 
-  };
   shelves = [
     {
       code: 'currentlyReading',

@@ -55,7 +55,6 @@ class Book extends React.Component {
   }
 }
 
-
 class BookShelf extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
@@ -83,4 +82,7 @@ class BookShelf extends React.Component {
   }
 }
 
-export default BookShelf
+export  {
+  BookShelf,
+  Book
+}
