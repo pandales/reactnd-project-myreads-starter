@@ -1,33 +1,8 @@
 import React from 'react'
 import {BookShelf} from './components/BookShelf'
-import * as BooksAPI from './BooksAPI'
 import {Link} from 'react-router-dom'
 
 class ListBooks extends React.Component {
-  state = {
-    books: []
-  };
-
-  componentDidMount() {
-
-    BooksAPI.getAll().then(books => {
-      this.setState({books: books})
-    });
-  }
-
-  // Utilities functions
-  updateBookShelf(book, shelf) {
-    let books = this.state.books.map(b => {
-      if (b.id === book.id) b.shelf = shelf;
-
-      return b;
-    });
-
-    this.setState({books: books});
-
-    // Update the shelf only if the destination is valid
-    shelf !== 'none' && BooksAPI.update(book, shelf);
-  }
 
   render() {
 
@@ -42,9 +17,9 @@ class ListBooks extends React.Component {
               <BookShelf
                 key={key}
                 title={shelf.name}
-                books={this.state.books.filter(book => book.shelf === shelf.code)}
+                books={this.props.books.filter(book => book.shelf === shelf.code)}
                 // Uses bind to ensure that always this funcion will be called using the app as this
-                updateBookShelf={this.updateBookShelf.bind(this)}
+                updateBookShelf={this.props.updateBookShelf}
               />
             ))}
           </div>

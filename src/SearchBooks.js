@@ -2,11 +2,13 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {Book} from './components/BookShelf'
 import * as BooksAPI from './BooksAPI'
+import sortBy from 'sort-by'
 
 class SearchBooks extends React.Component {
 
   state = {
     query: "",
+    searchResults: [],
     books:[]
   };
 
@@ -14,32 +16,27 @@ class SearchBooks extends React.Component {
     this.setState({query: event.target.value});
 
     if(event.target.value === "") {
-      this.setState({books: []});
+      this.setState({searchResults: []});
       return;
     }
 
      BooksAPI.search(event.target.value, 20)
       .then((response) => {
-        this.setState({books: response});
+        let searchResult = response.map((resultBook) => {
+
+          //If one  book is already in the shelf, add it instead of the result.
+          const resultInShelf = this.props.books.filter( (myBook) => myBook.id === resultBook.id);
+          if(resultInShelf.length) resultBook = resultInShelf[0];
+
+          return resultBook;
+        });
+
+        this.setState({searchResults: searchResult.sort(sortBy('title'))});
       })
-      .catch((error) => {
-        this.setState({books: []});
+      .catch((e) => {
+        this.setState({searchResults: []});
       })
   };
-
-  // Utilities functions
-  updateBookShelf(book, shelf) {
-    let books = this.state.books.map(b => {
-      if (b.id === book.id) b.shelf = shelf;
-
-      return b;
-    });
-
-    this.setState({books: books});
-
-    // Update the shelf only if the destination is valid
-    shelf !== 'none' && BooksAPI.update(book, shelf);
-  }
 
   render() {
 
@@ -53,9 +50,9 @@ class SearchBooks extends React.Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.state.books.map((book) => (
+            {this.state.searchResults.map((book) => (
               <li key={book.id}>
-                <Book book={book} updateBookShelf={this.updateBookShelf}/>
+                <Book book={book} updateBookShelf={this.props.updateBookShelf}/>
               </li>
             ))}
           </ol>
