@@ -2,43 +2,30 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 
+const BookMenu = ({book, updateShelf}) => {
 
-class BookMenu extends React.Component {
-  static propTypes = {
-    book: PropTypes.object.isRequired,
-    updateShelf: PropTypes.func.isRequired
-  };
+  return (
+    <div className="book-shelf-changer">
+      <select value={book.shelf || "none"}
+              onChange={(event) => updateShelf(book, event.target.value)}>
+        <option value="none" disabled>Move to...</option>
+        <option value="currentlyReading">Currently Reading</option>
+        <option value="wantToRead">Want to Read</option>
+        <option value="read">Read</option>
+        <option value="none">None</option>
 
-  render() {
-    const {book, updateShelf} = this.props;
+      </select>
+    </div>
+  );
+};
 
-    return (
-      <div className="book-shelf-changer">
-        <select value={book.shelf || "none"}
-                onChange={(event) => updateShelf(book, event.target.value)}>
-          <option value="none" disabled>Move to...</option>
-          <option value="currentlyReading">Currently Reading</option>
-          <option value="wantToRead">Want to Read</option>
-          <option value="read">Read</option>
-          <option value="none">None</option>
-
-        </select>
-      </div>
-    );
-  }
-}
+BookMenu.propTypes = {
+   book: PropTypes.object.isRequired,
+   updateShelf: PropTypes.func.isRequired
+ };
 
 
-class Book extends React.Component {
-
-  static propTypes = {
-    book: PropTypes.object.isRequired,
-    updateBookShelf: PropTypes.func.isRequired
-  };
-
-  render() {
-
-    const {book, updateBookShelf} = this.props;
+const Book = ({book, updateBookShelf}) => {
 
     return (
       <div className="book">
@@ -47,25 +34,21 @@ class Book extends React.Component {
             width: 128,
             height: 193,
             backgroundImage: `url(${book.imageLinks.thumbnail})`
-          }}></div>
+          }}> </div>
           <BookMenu book={book} updateShelf={updateBookShelf}/>
         </div>
         <div className="book-title">{book.title}</div>
         <div className="book-authors">{book.authors}</div>
       </div>
     );
-  }
-}
+};
 
-class BookShelf extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    books: PropTypes.array.isRequired,
-    updateBookShelf: PropTypes.func.isRequired
-  };
-  render() {
+Book.propTypes = {
+  book: PropTypes.object.isRequired,
+  updateBookShelf: PropTypes.func.isRequired
+};
 
-    let {books, title, updateBookShelf} = this.props;
+const BookShelf = ({books, title, updateBookShelf}) =>{
 
     return (
       <div className="bookshelf">
@@ -81,9 +64,13 @@ class BookShelf extends React.Component {
         </div>
       </div>
     );
-  }
-}
+};
 
+BookShelf.propTypes = {
+  title: PropTypes.string.isRequired,
+  books: PropTypes.array.isRequired,
+  updateBookShelf: PropTypes.func.isRequired
+};
 export  {
   BookShelf,
   Book

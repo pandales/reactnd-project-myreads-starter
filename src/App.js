@@ -7,9 +7,28 @@ import SearchBooks from "./SearchBooks";
 
 class BooksApp extends React.Component {
 
-  state = {
-    books: []
-  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      books: []
+    };
+
+    this.shelves = [
+      {
+        code: 'currentlyReading',
+        name: 'Currently Reading'
+      },
+      {
+        code: 'wantToRead',
+        name: 'Want to read'
+      },
+      {
+        code: 'read',
+        name: 'Read'
+      }
+    ];
+  }
 
   componentDidMount() {
 
@@ -37,20 +56,7 @@ class BooksApp extends React.Component {
     this.setState({books: books});
     BooksAPI.update(book, shelf);
   }
-  shelves = [
-    {
-      code: 'currentlyReading',
-      name: 'Currently Reading'
-    },
-    {
-      code: 'wantToRead',
-      name: 'Want to read'
-    },
-    {
-      code: 'read',
-      name: 'Read'
-    }
-    ];
+
 
   render() {
 
